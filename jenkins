@@ -1,0 +1,17 @@
+#!/bin/bash
+sudo apt update
+sudo apt upgrade -y
+sudo apt install wget -y
+sudo apt install fontconfig openjdk-17-jre -y
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins -y
+
+docker build -t nikitashirbhate/project1 .
+docker login -u nikitashirbhate -p Shirbhate@123
+docker push nikitashirbhate/project1
+ssh admin@54.196.166.245 "docker pull nikitashirbhate/project1;docker ps -a | grep "project1" && docker rm -f "project1"; docker run -d --name project1 -p 80:80 nikitashirbhate/project1"
